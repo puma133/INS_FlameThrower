@@ -3,7 +3,7 @@ public Plugin myinfo =
     name = "FlameThrower",
     author = "游而不擊 轉進如風",
     description = "FlameThrower for insurgency",
-    version = "1.0",
+    version = "public 1.0",
     url = "https://github.com/gandor233"
 };
 
@@ -96,7 +96,7 @@ public void OnPluginStart()
 {
     DEBUG = CreateConVar("sm_flamethrower_debug", "0", "");
     sm_flamethrower_range = CreateConVar("sm_flamethrower_range", "700.0", "");
-    sm_flamethrower_angle = CreateConVar("sm_flamethrower_angle", "30.0", "");
+    sm_flamethrower_angle = CreateConVar("sm_flamethrower_angle", "36.0", "");
     sm_flamethrower_burn_time = CreateConVar("sm_flamethrower_burn_time", "5.0", "");
     HookEvent("weapon_fire", Event_WeaponFire, EventHookMode_Post);
     HookEvent("player_death", Event_PlayerDeath, EventHookMode_Post);
