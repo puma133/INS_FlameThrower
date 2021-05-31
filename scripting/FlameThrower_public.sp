@@ -13,7 +13,6 @@ public Plugin myinfo =
 #include <sdktools>
 #include <WeaponAttachmentAPI>
 
-ConVar DEBUG = null;
 // Team
 #define NO_TEAM 0
 #define TEAM_SPEC 1
@@ -88,15 +87,16 @@ ConVar DEBUG = null;
 #define INS_PF_SPAWNZONE 		(1 << 11)		// 11出生区				// 2048		// ENTER SPAWN ZONE (Also can resupply)
 #define INS_PF_12 				(1 << 12)		// 12					// 4096		//
 
+ConVar DEBUG = null;
 ConVar sm_flamethrower_range;
-ConVar sm_flamethrower_horizon;
+ConVar sm_flamethrower_angle;
 ConVar sm_flamethrower_burn_time;
 int g_iPlayerFireEntityRef[MAXPLAYERS+1];
 public void OnPluginStart()
 {
     DEBUG = CreateConVar("sm_flamethrower_debug", "0", "");
     sm_flamethrower_range = CreateConVar("sm_flamethrower_range", "700.0", "");
-    sm_flamethrower_horizon = CreateConVar("sm_flamethrower_horizon", "0.95", "");
+    sm_flamethrower_angle = CreateConVar("sm_flamethrower_angle", "30.0", "");
     sm_flamethrower_burn_time = CreateConVar("sm_flamethrower_burn_time", "5.0", "");
     HookEvent("weapon_fire", Event_WeaponFire, EventHookMode_Post);
     HookEvent("player_death", Event_PlayerDeath, EventHookMode_Post);
@@ -507,7 +507,7 @@ stock bool CanClientBurnClient(int client, int iTargetClient)
     float fDirection[3];
     SubtractVectors(fTargetClientEyePosition, fClientEyePosition, fDirection);
     NormalizeVector(fDirection, fDirection);
-    if (GetVectorDotProduct(fClientEyeAnglesVector, fDirection) < sm_flamethrower_horizon.FloatValue) // cosθ < horizon
+    if (GetVectorDotProduct(fClientEyeAnglesVector, fDirection) < Cosine(DegToRad(sm_flamethrower_angle.FloatValue/2.0))) // cosθ < horizon
         return false;
     
     Handle trace = TR_TraceRayFilterEx(fClientEyePosition, fTargetClientEyePosition, CONTENTS_SOLID|CONTENTS_MOVEABLE, RayType_EndPoint, TraceEntityFilter_OnlyWorld, client);
