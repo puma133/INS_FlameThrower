@@ -9,7 +9,7 @@ WeaponAttachmentAPI plugin is modified from [Mitchell's plugin](https://github.c
 ## Convar
 ```
 "sm_flamethrower_range" - FlameThrower fire range (Default value: 700.0)
-"sm_flamethrower_angle" - FlameThrower fire angle (Default value: 30.0)
+"sm_flamethrower_angle" - FlameThrower fire angle (Default value: 36.0)
 "sm_flamethrower_burn_time" - Burn duration (Default value: 5.0)
 ```
 
