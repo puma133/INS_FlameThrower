@@ -531,8 +531,6 @@ stock bool CanClientBurnClient(int client, int iTargetClient)
 
 public void PrecacheFile()
 {
-    AddFileToDownloadsTable("custom/Gandor233_Particles_000.vpk");
-    AddFileToDownloadsTable("custom/Gandor233_Particles_dir.vpk");
     PrecacheParticleFile("particles/mnb_flamethrower.pcf");
     PrecacheParticleEffect("flamethrower");
     return;

@@ -16,9 +16,22 @@ WeaponAttachmentAPI plugin is modified from [MitchDizzle's plugin](https://githu
 ## Guide
 To use this plugin you need modify your mod theater.
 #### 1. Subscribe the [required mod](https://steamcommunity.com/sharedfiles/filedetails/?id=2392887647) for your server
-#### 2. Add "#base" to your mod main theater file
+#### 2. Add "#base", "sounds" and "localize" to your mod main theater file
 ```
 "#base" "base/gandor233_flamethrower.theater"
+...
+"theater"
+{
+	"core"
+	{
+		"precache"
+		{
+            ...
+			"sounds"			"scripts/gandor233_flamethrower_sounds.txt"
+			"localize"			"resource/gandor233_flamethrower_%language%.txt"
+        }
+    }
+}
 ```
 #### 3. Add "flame" to your mod ammo theater file
 ```
@@ -63,3 +76,4 @@ To use this plugin you need modify your mod theater.
     }
 }
 ```
+#### 5. Put FlameThrower_public.smx and WeaponAttachmentAPI.smx to "insurgency\addons\sourcemod\plugins\"
