@@ -27,8 +27,8 @@ To use this plugin you need modify your mod theater.
 		"precache"
 		{
             ...
-			"sounds"			"scripts/gandor233_flamethrower_sounds.txt"
-			"localize"			"resource/gandor233_flamethrower_%language%.txt"
+			"sounds"      "scripts/gandor233_flamethrower_sounds.txt"
+			"localize"    "resource/gandor233_flamethrower_%language%.txt"
         }
     }
 }
