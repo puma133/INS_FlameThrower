@@ -1,5 +1,5 @@
 /*
- * @Description: The model and script are modified by axotn1k
+ * @Description: Models and scripts are modified by axotn1k
  * @Author: Gandor
  * @Github: https://github.com/gandor233
  */
@@ -16,7 +16,6 @@ public Plugin myinfo =
 #include <sourcemod>
 #include <sdkhooks>
 #include <sdktools>
-#include <WeaponAttachmentAPI>
 
 // Team
 #define NO_TEAM 0
@@ -111,8 +110,8 @@ public void OnPluginStart()
     sm_ft_sound_enable = CreateConVar("sm_ft_sound_enable", "1", "Is all plugin flamethrower fire sound enable?");
     sm_ft_start_sound_sec = CreateConVar("sm_ft_start_sound_sec", "weapons/flamethrowerno2/flamethrower_start.wav", "Flamethrower fire START sound file path for team sec. Closed if empty.");
     sm_ft_loop_sound_sec = CreateConVar("sm_ft_loop_sound_sec", "weapons/flamethrowerno2/flamethrower_looping.wav", "Flamethrower fire LOOP sound file path for team sec. Closed if empty.");
-    sm_ft_end_sound_sec = CreateConVar("sm_ft_end_sound_sec", "", "Flamethrower fire END sound file path for team sec. Closed if empty."); // weapons/flamethrowerno2/flamethrower_end.wav
-    sm_ft_empty_sound_sec = CreateConVar("sm_ft_empty_sound_sec", "weapons/FlamethrowerNo2/handling/flamethrower_empty.wav", "Flamethrower fire EMPTY sound file path for team sec. Closed if empty.");
+    sm_ft_end_sound_sec = CreateConVar("sm_ft_end_sound_sec", "weapons/flamethrowerno2/flamethrower_end.wav", "Flamethrower fire END sound file path for team sec. Closed if empty.");
+    sm_ft_empty_sound_sec = CreateConVar("sm_ft_empty_sound_sec", "", "Flamethrower fire EMPTY sound file path for team sec. Closed if empty."); // weapons/FlamethrowerNo2/handling/flamethrower_empty.wav
     sm_ft_start_sound_ins = CreateConVar("sm_ft_start_sound_ins", "weapons/flamethrowerno41/flamethrower_start.wav", "Flamethrower fire START sound file path for team ins. Closed if empty.");
     sm_ft_loop_sound_ins = CreateConVar("sm_ft_loop_sound_ins", "weapons/flamethrowerno41/flamethrower_looping.wav", "Flamethrower fire LOOP sound file path for team ins. Closed if empty.");
     sm_ft_end_sound_ins = CreateConVar("sm_ft_end_sound_ins", "weapons/flamethrowerno41/flamethrower_end.wav", "Flamethrower fire END sound file path for team ins. Closed if empty.");

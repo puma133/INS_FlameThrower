@@ -1,11 +1,8 @@
-# INS_FlameThrower_v2.0
+# INS_FlameThrower
 Flamethrower plugin for insurgency(2014) v2.0
 
-Models and scripts are modified by axotn1k
-<br>WeaponAttachmentAPI plugin is modified from [MitchDizzle's plugin](https://github.com/MitchDizzle/WeaponAttachmentAPI)
-
 ## Required Mod
-[其他 Extra | 喷火器 Flamethrower v2.0](https://steamcommunity.com/sharedfiles/filedetails/?id=2392887647)
+[其他 Extra | 喷火器 Flamethrower](https://steamcommunity.com/sharedfiles/filedetails/?id=2392887647)
 
 ## Convar
 ```
@@ -102,15 +99,19 @@ To use this plugin you need to modify the original theater and create your own t
 ```
 ### 5. Install plugin
 Remove other versions of flamethrower plugin
-<br>Put FlameThrower_public_v2.0.smx and WeaponAttachmentAPI.smx into "insurgency\addons\sourcemod\plugins\"
+<br>Put FlameThrower_public_v2.0.smx into "insurgency\addons\sourcemod\plugins\"
 ### 6. Particles file
 Put the v2.0 versions custom\Flamethrower_Particles_dir.vpk and custom\Flamethrower_Particles_000.vpk to your fastdl folder, and make sure player is forced to download these two vpk files to them custom folder when they join your server.
 
 If you don't have a fastdl server, player also need to subscribe the required mod by themself, otherwise the flamethrower fire particles effect won't show up if player didn't reconnect to your server when they first join your server erverytime after they start the game program.
 
+## Credits
+* Models and scripts are modified by axotn1k
+
 ## Changelog
 ```
 v2.0:
+* The WeaponAttachmentAPI plugin is no longer needed.
 * Using plugin instead of theater scripts to play the sound effect of flamethrower.
 * Using theater scripts instead of plugin to cause direct damage.
 * Using theater scripts instead of plugin to create flamethrower effects.
