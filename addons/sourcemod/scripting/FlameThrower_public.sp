@@ -8,7 +8,7 @@ public Plugin myinfo =
     name = "weapon_flamethrower_p2",
     author = "游而不擊 轉進如風",
     description = "FlameThrower plugin for insurgency(2014)",
-    version = "public 2.1",
+    version = "Public 2.1",
     url = "https://github.com/gandor233"
 };
 
@@ -873,7 +873,7 @@ int g_iSoundChannel[] =
     SNDCHAN_VOICE,          /**< Voices */
     SNDCHAN_ITEM,           /**< Items */
     SNDCHAN_BODY,           /**< Player? */
-    SNDCHAN_WEAPON,         /**< "Stream iChannel from the static or dynamic area" */
+    SNDCHAN_STREAM,         /**< "Stream iChannel from the static or dynamic area" */
     SNDCHAN_STATIC,         /**< "Stream iChannel from the static area" */
     SNDCHAN_VOICE_BASE,     /**< "Channel for network voice data" */
     SNDCHAN_USER_BASE,     /**< Anything >= this is allocated to game code */
