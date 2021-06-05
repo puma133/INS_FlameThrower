@@ -8,7 +8,7 @@ public Plugin myinfo =
     name = "weapon_flamethrower_p2",
     author = "游而不擊 轉進如風",
     description = "FlameThrower plugin for insurgency(2014)",
-    version = "Public 2.1",
+    version = "Public 2.2",
     url = "https://github.com/gandor233"
 };
 
@@ -70,6 +70,7 @@ float g_fFlameThrowerSelfDamageMultiplier;
 char g_cFlameThrowerAmmoName[MAX_NAME_LENGTH];
 
 ConVar DEBUG = null;
+ConVar sm_ft_using_official_mod;
 ConVar sm_ft_burn_time;
 ConVar sm_ft_ammo_class_name;
 ConVar sm_ft_self_damage_mult;
@@ -84,11 +85,13 @@ ConVar sm_ft_loop_sound_ins;
 ConVar sm_ft_end_sound_ins;
 ConVar sm_ft_empty_sound_ins;
 bool g_bIsClientFiringFlamethrower[MAXPLAYERS+1];
+
 public void OnPluginStart()
 {
     DEBUG = CreateConVar("sm_flamethrower_debug", "0", "");
+    sm_ft_using_official_mod = CreateConVar("sm_ft_using_official_mod", "1", "If you are using the official mod of the plugin author, please set it to 1, then the plugin will run AddFileToDownloadsTable(\"custom/Flamethrower_Particles_***.vpk\") and PrecacheParticleFile(\"particles/ins_flamethrower.pcf\") automatically. If set to 0, you need to deal the particles files by yourself.");
     sm_ft_burn_time = CreateConVar("sm_ft_burn_time", "2.0", "Burn duration");
-    sm_ft_ammo_class_name = CreateConVar("sm_ft_ammo_class_name", "flame_proj", "Flamethrower ammo entity class name.");
+    sm_ft_ammo_class_name = CreateConVar("sm_ft_ammo_class_name", "flame_proj", "Flamethrower ammo entity class name. You must set this convar if you use a different ammo class name in your theater.");
     sm_ft_self_damage_mult = CreateConVar("sm_ft_self_damage_mult", "0.2", "Flamethrower self damage multiplier.");
     sm_ft_fire_interval = CreateConVar("sm_ft_fire_interval", "0.12", "Flamethrower launch interval. Closed if less than 0.08.");
     sm_ft_ammo_class_name.AddChangeHook(OnConVarChanged);
@@ -161,6 +164,26 @@ public void OnMapStart()
 }
 public void OnMapEnd()
 {
+    return;
+}
+public void PrecacheFile()
+{
+    if (sm_ft_using_official_mod.BoolValue)
+    {
+        AddFileToDownloadsTable("custom/Flamethrower_Particles_000.vpk");
+        AddFileToDownloadsTable("custom/Flamethrower_Particles_dir.vpk");
+        PrecacheParticleFile("particles/ins_flamethrower.pcf");
+    }
+    
+    PrecacheParticleEffect("flamethrower");
+    PrecacheSoundByConVar(sm_ft_start_sound_sec);
+    PrecacheSoundByConVar(sm_ft_loop_sound_sec);
+    PrecacheSoundByConVar(sm_ft_end_sound_sec);
+    PrecacheSoundByConVar(sm_ft_empty_sound_sec);
+    PrecacheSoundByConVar(sm_ft_start_sound_ins);
+    PrecacheSoundByConVar(sm_ft_loop_sound_ins);
+    PrecacheSoundByConVar(sm_ft_end_sound_ins);
+    PrecacheSoundByConVar(sm_ft_empty_sound_ins);
     return;
 }
 
@@ -430,22 +453,6 @@ stock void StopClientFlamethrowerSound(int client, bool bImmediately = false)
         StopEntitySound(client, cLoopSoundPath, SNDCHAN_WEAPON);
     }
     
-    return;
-}
-public void PrecacheFile()
-{
-    AddFileToDownloadsTable("custom/Flamethrower_Particles_000.vpk");
-    AddFileToDownloadsTable("custom/Flamethrower_Particles_dir.vpk");
-    PrecacheParticleFile("particles/ins_flamethrower.pcf");
-    PrecacheParticleEffect("weapon_flamethrower");
-    PrecacheSoundByConVar(sm_ft_start_sound_sec);
-    PrecacheSoundByConVar(sm_ft_loop_sound_sec);
-    PrecacheSoundByConVar(sm_ft_end_sound_sec);
-    PrecacheSoundByConVar(sm_ft_empty_sound_sec);
-    PrecacheSoundByConVar(sm_ft_start_sound_ins);
-    PrecacheSoundByConVar(sm_ft_loop_sound_ins);
-    PrecacheSoundByConVar(sm_ft_end_sound_ins);
-    PrecacheSoundByConVar(sm_ft_empty_sound_ins);
     return;
 }
 public bool PrecacheSoundByConVar(ConVar hConVar)

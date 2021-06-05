@@ -2,7 +2,7 @@
 Flamethrower plugin for insurgency(2014)
 
 ## Version
-    Public 2.1
+    Public 2.2
 
 ## Required Mod
 [其他 Extra | 喷火器 Flamethrower](https://steamcommunity.com/sharedfiles/filedetails/?id=2392887647)
@@ -13,9 +13,15 @@ Flamethrower plugin for insurgency(2014)
 <summary>Click to show</summary>
 
 ```
-// Flamethrower ammo entity class name.
-// Default: "flame_proj"
+// If you are using the official mod of the plugin author, please set it to 1, then the plugin will run AddFileToDownloadsTable("custom/Flamethrower_Particles_***.vpk") and PrecacheParticleFile("particles/ins_flamethrower.pcf") automatically. If set to 0, you need to deal the particles files by yourself.
+// Default: "1"
+sm_ft_using_official_mod "1"
 
+// Flamethrower ammo entity class name. You must set this convar if you use a different ammo class name in your theater.
+// Default: "flame_proj"
+sm_ft_burn_time "flame_proj"
+
+// Burn duration
 // Default: "2.0"
 sm_ft_burn_time "2.0"
 
@@ -155,7 +161,7 @@ To use this plugin you need to modify the original theater and create your own t
 Remove other versions of flamethrower plugin
 <br>Put FlameThrower_public.smx into "insurgency\addons\sourcemod\plugins\"
 ### 6. Particles file
-Put the version 2.1 custom\Flamethrower_Particles_dir.vpk and custom\Flamethrower_Particles_000.vpk to your fastdl folder, and make sure player is forced to download these two vpk files to them custom folder when they join your server.
+Put the version 2.1+ custom\Flamethrower_Particles_dir.vpk and custom\Flamethrower_Particles_000.vpk to your fastdl folder, and make sure player is forced to download these two vpk files to them custom folder when they join your server.
 
 If you don't have a fastdl server, player also need to subscribe the required mod by themself, otherwise the flamethrower fire particles effect won't show up if player didn't reconnect to your server when they first join your server erverytime after they start the game program.
 
@@ -166,6 +172,10 @@ Models and scripts are modified by axotn1k
 
 ## Changelog
 ```
+v2.2:
+* Fixed the misspelled particle effect name.
+* Added convar sm_ft_using_official_mod.
+
 v2.1:
 * Fixed missing particle effects in previous version.
 * Fixed server crash when sound convar was set to null.

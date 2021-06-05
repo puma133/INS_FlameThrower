@@ -1,9 +1,9 @@
-[SIZE="4"]A Flamethrower plugin made of "Day of Infamy" model and particles for insurgency(2014)[/SIZE]
+[SIZE="4"]A Flamethrower plugin made of "Day of Infamy" models and particles for insurgency(2014)[/SIZE]
 
 [ATTACH]189544[/ATTACH]
 
 [SIZE="4"]Version[/SIZE]
- [LIST][*]Public 2.1[/LIST]
+ [LIST][*]Public 2.2[/LIST]
 
 [SIZE="4"]Feature list[/SIZE]
 [LIST][*]Ignite and kill other players
@@ -16,11 +16,17 @@
 [*][URL="https://steamcommunity.com/sharedfiles/filedetails/?id=2392887647"]其他 Extra | 喷火器 Flamethrower[/URL] (steam workshop id=2392887647)
 [/LIST]
 
-[SIZE="4"]Convar[/SIZE]
-[SPOILER][CODE]
-// Flamethrower ammo entity class name.
-// Default: "flame_proj"
+[SIZE="4"]ConVar[/SIZE]
+[SPOILER]Copy what you want to modify to your server.cfg[CODE]
+// If you are using the official mod of the plugin author, please set it to 1, then the plugin will run AddFileToDownloadsTable("custom/Flamethrower_Particles_***.vpk") and PrecacheParticleFile("particles/ins_flamethrower.pcf") automatically. If set to 0, you need to deal the particles files by yourself.
+// Default: "1"
+sm_ft_using_official_mod "1"
 
+// Flamethrower ammo entity class name. You must set this convar if you use a different ammo class name in your theater.
+// Default: "flame_proj"
+sm_ft_burn_time "flame_proj"
+
+// Burn duration
 // Default: "2.0"
 sm_ft_burn_time "2.0"
 
@@ -145,16 +151,20 @@ If you don't know how to do it, please check the [URL="https://steamcommunity.co
 }[/CODE]
 [*][SIZE="2"]Install Plugin[/SIZE]
 Remove other versions of flamethrower plugin.
-Put version 2.1 FlameThrower_public.smx into "insurgency\addons\sourcemod\plugins\"
+Put version 2.1+ FlameThrower_public.smx into "insurgency\addons\sourcemod\plugins\"
 
 
 [*][SIZE="2"]Custom Particles File[/SIZE]
-Download version 2.1 Flamethrower_Particles.zip or clone from [URL="https://github.com/gandor233/INS_FlameThrower"]github[/URL]. put Flamethrower_Particles_dir.vpk and Flamethrower_Particles_000.vpk to your fastdl folder, and make sure player is forced to download these two vpk files to them [B]insurgency/custom/[/B] folder when they join your server.
+Download version 2.1+ Flamethrower_Particles.zip or clone from [URL="https://github.com/gandor233/INS_FlameThrower"]github[/URL]. put Flamethrower_Particles_dir.vpk and Flamethrower_Particles_000.vpk to your fastdl folder, and make sure player is forced to download these two vpk files to them [B]insurgency/custom/[/B] folder when they join your server.
 
 If you don't have a fastdl server, player also need to subscribe the [URL="https://steamcommunity.com/sharedfiles/filedetails/?id=2392887647"]required mod[/URL] by themself, otherwise the flamethrower fire particles effect won't show up if player didn't reconnect to your server when they first join your server erverytime after they restart the game program.[/LIST][/SPOILER]
 
 [SIZE="4"]Changelog[/SIZE]
 [CODE]
+v2.2:
+* Fixed the misspelled particle effect name.
+* Added convar sm_ft_using_official_mod.
+
 v2.1:
 * Fixed missing particle effects in previous version.
 * Fixed server crash when sound convar was set to null.
