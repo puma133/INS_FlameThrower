@@ -114,7 +114,7 @@ v2.0:
 * Add New player gerar - Fuel Tank
 * The WeaponAttachmentAPI plugin is no longer needed.
 * Fixed problems in the previous version models and particles files.
-* Fix the problem that the flame doesn't shoot from the muzzle in first person.
+* Fixed the problem that the flame doesn't shoot from the muzzle in first person.
 * Using theater scripts instead of plugin to create direct damage.
 * Using theater scripts instead of plugin to create flamethrower effects.
 * Using plugin instead of theater scripts to play the sound effect of flamethrower.
