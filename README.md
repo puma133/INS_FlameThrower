@@ -13,6 +13,8 @@ Flamethrower plugin for insurgency(2014)
 <summary>Click to show</summary>
 
 ```
+// Copy what you want to modify to your server.cfg
+
 // If you are using the official mod of the plugin author, please set it to 1, then the plugin will run AddFileToDownloadsTable("custom/Flamethrower_Particles_***.vpk") and PrecacheParticleFile("particles/ins_flamethrower.pcf") automatically. If set to 0, you need to deal the particles files by yourself.
 // Default: "1"
 sm_ft_using_official_mod "1"
@@ -79,7 +81,7 @@ sm_ft_empty_sound_ins ""
 To use this plugin you need to modify the original theater and create your own theater mod. 
 <br>If you don't know how to do it, please check the [theater modding guide](https://steamcommunity.com/sharedfiles/filedetails/?id=424392708).
 
-### 1. Subscribe the [required mod](https://steamcommunity.com/sharedfiles/filedetails/?id=2392887647) for your server or download it and edit it into your own mod
+### 1. Subscribe the [required mod](https://steamcommunity.com/sharedfiles/filedetails/?id=2392887647) for your server OR download it and edit it into your own mod
 ### 2. Add "#base", "sounds" and "localize" to your mod main theater file
 ```
 "#base" "base/gandor233_flamethrower.theater"
