@@ -8,7 +8,7 @@ public Plugin myinfo =
     name = "weapon_flamethrower_p2",
     author = "游而不擊 轉進如風",
     description = "FlameThrower plugin for insurgency(2014)",
-    version = "public 2.0",
+    version = "public 2.1",
     url = "https://github.com/gandor233"
 };
 
@@ -65,8 +65,15 @@ public Plugin myinfo =
 #define INS_PF_SPAWNZONE     (1 << 11)    // 11出生区              // 2048    // ENTER SPAWN ZONE (Also can resupply)
 #define INS_PF_12            (1 << 12)    // 12                    // 4096    // Unknow
 
+float g_fFlameThrowerFireInterval;
+float g_fFlameThrowerSelfDamageMultiplier;
+char g_cFlameThrowerAmmoName[MAX_NAME_LENGTH];
+
 ConVar DEBUG = null;
-ConVar sm_flamethrower_burn_time;
+ConVar sm_ft_burn_time;
+ConVar sm_ft_ammo_class_name;
+ConVar sm_ft_self_damage_mult;
+ConVar sm_ft_fire_interval;
 ConVar sm_ft_sound_enable;
 ConVar sm_ft_start_sound_sec;
 ConVar sm_ft_loop_sound_sec;
@@ -80,7 +87,14 @@ bool g_bIsClientFiringFlamethrower[MAXPLAYERS+1];
 public void OnPluginStart()
 {
     DEBUG = CreateConVar("sm_flamethrower_debug", "0", "");
-    sm_flamethrower_burn_time = CreateConVar("sm_flamethrower_burn_time", "2.0", "");
+    sm_ft_burn_time = CreateConVar("sm_ft_burn_time", "2.0", "Burn duration");
+    sm_ft_ammo_class_name = CreateConVar("sm_ft_ammo_class_name", "flame_proj", "Flamethrower ammo entity class name.");
+    sm_ft_self_damage_mult = CreateConVar("sm_ft_self_damage_mult", "0.2", "Flamethrower self damage multiplier.");
+    sm_ft_fire_interval = CreateConVar("sm_ft_fire_interval", "0.12", "Flamethrower launch interval. Closed if less than 0.08.");
+    sm_ft_ammo_class_name.AddChangeHook(OnConVarChanged);
+    sm_ft_self_damage_mult.AddChangeHook(OnConVarChanged);
+    sm_ft_fire_interval.AddChangeHook(OnConVarChanged);
+    
     sm_ft_sound_enable = CreateConVar("sm_ft_sound_enable", "1", "Is all plugin flamethrower fire sound enable?");
     sm_ft_start_sound_sec = CreateConVar("sm_ft_start_sound_sec", "weapons/flamethrowerno2/flamethrower_start.wav", "Flamethrower fire START sound file path for team sec. Closed if empty.");
     sm_ft_loop_sound_sec = CreateConVar("sm_ft_loop_sound_sec", "weapons/flamethrowerno2/flamethrower_looping.wav", "Flamethrower fire LOOP sound file path for team sec. Closed if empty.");
@@ -90,12 +104,27 @@ public void OnPluginStart()
     sm_ft_loop_sound_ins = CreateConVar("sm_ft_loop_sound_ins", "weapons/flamethrowerno41/flamethrower_looping.wav", "Flamethrower fire LOOP sound file path for team ins. Closed if empty.");
     sm_ft_end_sound_ins = CreateConVar("sm_ft_end_sound_ins", "weapons/flamethrowerno41/flamethrower_end.wav", "Flamethrower fire END sound file path for team ins. Closed if empty.");
     sm_ft_empty_sound_ins = CreateConVar("sm_ft_empty_sound_ins", "", "Flamethrower fire EMPTY sound file path for team ins. Closed if empty."); // weapons/FlamethrowerNo41/handling/flamethrower_empty.wav
+
     HookEvent("weapon_fire", Event_WeaponFire, EventHookMode_Post);
     HookEvent("weapon_fire_on_empty", Event_WeaponFireOnEmpty, EventHookMode_Post);
     HookEvent("player_spawn", Event_PlayerSpawnorDeath, EventHookMode_Post);
     HookEvent("player_death", Event_PlayerSpawnorDeath, EventHookMode_Post);
+    HookEvent("grenade_detonate", Event_GrenadeDetonate, EventHookMode_Post);
+    HookEvent("missile_launched", Event_MissileLaunched, EventHookMode_Post);
+    AddTempEntHook("World Decal", TE_OnDecal);
+    AddTempEntHook("Entity Decal", TE_OnDecal);
     
+    g_fFlameThrowerFireInterval = sm_ft_fire_interval.FloatValue;
+    g_fFlameThrowerSelfDamageMultiplier = sm_ft_self_damage_mult.FloatValue;
+    sm_ft_ammo_class_name.GetString(g_cFlameThrowerAmmoName, sizeof(g_cFlameThrowerAmmoName));
     MoreFire_OnPluginStart();
+    return;
+}
+public void OnConVarChanged(ConVar convar, const char[] oldValue, const char[] newValue)
+{
+    g_fFlameThrowerFireInterval = sm_ft_fire_interval.FloatValue;
+    g_fFlameThrowerSelfDamageMultiplier = sm_ft_self_damage_mult.FloatValue;
+    sm_ft_ammo_class_name.GetString(g_cFlameThrowerAmmoName, sizeof(g_cFlameThrowerAmmoName));
     return;
 }
 public void OnAllPluginsLoaded()
@@ -135,7 +164,6 @@ public void OnMapEnd()
     return;
 }
 
-// Remove client flamethrower fire effect when client die
 void Event_PlayerSpawnorDeath(Event event, const char[] name, bool dontBroadcast)
 {
     int client = GetClientOfUserId(event.GetInt("userid"));
@@ -152,8 +180,16 @@ public Action OnClientAttack(int victim, int& attacker, int& inflictor, float& d
             {
                 char cWeaponName[MAX_NAME_LENGTH];
                 GetEdictClassname(inflictor, cWeaponName, sizeof(cWeaponName));
-                if (StrContains(cWeaponName, "flame_proj", false) > -1)
-                    BurnPlayer(attacker, victim, sm_flamethrower_burn_time.FloatValue);
+                if (StrContains(cWeaponName, g_cFlameThrowerAmmoName, false) > -1)
+                {
+                    BurnPlayer(attacker, victim, sm_ft_burn_time.FloatValue);
+                    
+                    if (attacker == victim)
+                    {
+                        damage = damage * g_fFlameThrowerSelfDamageMultiplier;
+                        return Plugin_Changed;
+                    }
+                }
             }
         }
     }
@@ -165,10 +201,10 @@ public void Event_WeaponFire(Event event, char[] name, bool Broadcast)
     int client = GetClientOfUserId(userid);
     if (IsValidClient(client))
     {
-        if (!g_bIsClientFiringFlamethrower[client])
+        int iWeaponID = GetPlayerActiveWeapon(client);
+        if (iWeaponID > MaxClients && IsValidEntity(iWeaponID))
         {
-            int iWeaponID = GetPlayerActiveWeapon(client);
-            if (iWeaponID > MaxClients && IsValidEntity(iWeaponID))
+            if (!g_bIsClientFiringFlamethrower[client])
             {
                 char cWeaponName[256];
                 GetEntityClassname(iWeaponID, cWeaponName, sizeof(cWeaponName));
@@ -191,9 +227,15 @@ public void Event_WeaponFire(Event event, char[] name, bool Broadcast)
                             sm_ft_start_sound_ins.GetString(cStartSoundPath, sizeof(cStartSoundPath));
                         
                         if (strlen(cStartSoundPath) > 0)
-                            GiveEntitySound(client, cStartSoundPath, 1.0, 80, SNDCHAN_STREAM);
+                            GiveEntitySound(client, cStartSoundPath, 1.0, 80, SNDCHAN_WEAPON);
                     }
                 }
+            }
+            else
+            {
+                // PrintToServer("%0.2fs", GetEntPropFloat(iWeaponID, Prop_Data, "m_flNextPrimaryAttack") - GetGameTime());
+                if (g_fFlameThrowerFireInterval > 0.08)
+                    SetEntPropFloat(iWeaponID, Prop_Data, "m_flNextPrimaryAttack", GetGameTime() + g_fFlameThrowerFireInterval);
             }
         }
     }
@@ -209,6 +251,8 @@ public void Event_WeaponFireOnEmpty(Event event, char[] name, bool Broadcast)
         static float s_fClientLastEmptySoundTime[MAXPLAYERS+1];
         if (GetEngineTime() - s_fClientLastEmptySoundTime[client] < 1.0)
             return;
+        
+        g_bIsClientFiringFlamethrower[client] = false;
         
         int iWeaponID = GetPlayerActiveWeapon(client);
         if (iWeaponID > MaxClients && IsValidEntity(iWeaponID))
@@ -228,7 +272,7 @@ public void Event_WeaponFireOnEmpty(Event event, char[] name, bool Broadcast)
                         sm_ft_empty_sound_ins.GetString(cEmptySoundPath, sizeof(cEmptySoundPath));
                     
                     if (strlen(cEmptySoundPath) > 0)
-                        GiveEntitySound(client, cEmptySoundPath, 1.0, 80, SNDCHAN_STREAM);
+                        GiveEntitySound(client, cEmptySoundPath, 1.0, 80, SNDCHAN_WEAPON);
                 }
             }
         }
@@ -278,7 +322,7 @@ public Action CheckPlayerFireDelay_Timer(Handle timer, DataPack hDataPack)
                 sm_ft_loop_sound_ins.GetString(cLoopSoundPath, sizeof(cLoopSoundPath));
             
             if (strlen(cLoopSoundPath) > 0)
-                GiveEntitySound(client, cLoopSoundPath, 1.0, 80, SNDCHAN_STREAM);
+                GiveEntitySound(client, cLoopSoundPath, 1.0, 80, SNDCHAN_WEAPON);
         }
     }
 
@@ -294,7 +338,7 @@ public Action CheckPlayerFireDelay_Timer(Handle timer, DataPack hDataPack)
     CloseHandle(trace);
     if (iEntityID > MaxClients && IsValidEntityEx(iEntityID) && GetEntitiesDistance(client, iEntityID) < 500.0)
     {
-        CreateHurt(client, iEntityID, 50, iWeaponId, "flame_projj", DMG_BURN|DMG_BLAST);
+        CreateHurt(client, iEntityID, 50, iWeaponId, g_cFlameThrowerAmmoName, DMG_BURN|DMG_BLAST);
         if (!IsEntityOnFire(iEntityID))
         {
             ExtinguishEntity(iEntityID);
@@ -326,6 +370,39 @@ public void OnPlayerRunCmdPost(int client, int buttons, int impulse, const float
     }
     return;
 }
+
+// Block the scorch decal
+bool g_bBlockDecal = false;
+bool g_bIsFlameEntity[2048];
+public void Event_MissileLaunched(Event event, char[] name, bool Broadcast)
+{
+    int entityid = event.GetInt("entityid");
+    int client = GetClientOfUserId(event.GetInt("userid"));
+    if (client > 0 && client <= MaxClients && g_bIsClientFiringFlamethrower[client])
+        g_bIsFlameEntity[entityid] = true;
+    return;
+}
+public void Event_GrenadeDetonate(Event event, char[] name, bool Broadcast)
+{
+    int entityid = event.GetInt("entityid");
+    if (g_bIsFlameEntity[entityid])
+    {
+        g_bBlockDecal = true;
+        g_bIsFlameEntity[entityid] = false;
+    }
+    return;
+}
+public Action TE_OnDecal(const char[] te_name, const int[] Players, int numClients, float delay)
+{
+    if (g_bBlockDecal)
+    {
+        g_bBlockDecal = false;
+        return Plugin_Handled;
+    }
+    
+    return Plugin_Continue;
+}
+
 stock void StopClientFlamethrowerSound(int client, bool bImmediately = false)
 {
     if (!bImmediately && sm_ft_sound_enable.BoolValue)
@@ -336,21 +413,21 @@ stock void StopClientFlamethrowerSound(int client, bool bImmediately = false)
         else
             sm_ft_end_sound_ins.GetString(cEndSoundPath, sizeof(cEndSoundPath));
         if (strlen(cEndSoundPath) > 0)
-            GiveEntitySound(client, cEndSoundPath, 1.0, 80, SNDCHAN_STREAM);
+            GiveEntitySound(client, cEndSoundPath, 1.0, 80, SNDCHAN_WEAPON);
         
         char cLoopSoundPath[512];
         sm_ft_loop_sound_sec.GetString(cLoopSoundPath, sizeof(cLoopSoundPath));
-        StopEntitySound(client, cLoopSoundPath, SNDCHAN_STREAM);
+        StopEntitySound(client, cLoopSoundPath, SNDCHAN_WEAPON);
         sm_ft_loop_sound_ins.GetString(cLoopSoundPath, sizeof(cLoopSoundPath));
-        StopEntitySound(client, cLoopSoundPath, SNDCHAN_STREAM);
+        StopEntitySound(client, cLoopSoundPath, SNDCHAN_WEAPON);
     }
     else
     {
         char cLoopSoundPath[512];
         sm_ft_loop_sound_sec.GetString(cLoopSoundPath, sizeof(cLoopSoundPath));
-        StopEntitySound(client, cLoopSoundPath, SNDCHAN_STREAM);
+        StopEntitySound(client, cLoopSoundPath, SNDCHAN_WEAPON);
         sm_ft_loop_sound_ins.GetString(cLoopSoundPath, sizeof(cLoopSoundPath));
-        StopEntitySound(client, cLoopSoundPath, SNDCHAN_STREAM);
+        StopEntitySound(client, cLoopSoundPath, SNDCHAN_WEAPON);
     }
     
     return;
@@ -359,21 +436,26 @@ public void PrecacheFile()
 {
     AddFileToDownloadsTable("custom/Flamethrower_Particles_000.vpk");
     AddFileToDownloadsTable("custom/Flamethrower_Particles_dir.vpk");
-    PrecacheParticleFile("particles/mnb_flamethrower.pcf");
+    PrecacheParticleFile("particles/ins_flamethrower.pcf");
     PrecacheParticleEffect("weapon_flamethrower");
     PrecacheSoundByConVar(sm_ft_start_sound_sec);
     PrecacheSoundByConVar(sm_ft_loop_sound_sec);
     PrecacheSoundByConVar(sm_ft_end_sound_sec);
+    PrecacheSoundByConVar(sm_ft_empty_sound_sec);
     PrecacheSoundByConVar(sm_ft_start_sound_ins);
     PrecacheSoundByConVar(sm_ft_loop_sound_ins);
     PrecacheSoundByConVar(sm_ft_end_sound_ins);
+    PrecacheSoundByConVar(sm_ft_empty_sound_ins);
     return;
 }
 public bool PrecacheSoundByConVar(ConVar hConVar)
 {
     char cSoundPath[512];
     hConVar.GetString(cSoundPath, sizeof(cSoundPath));
-    return PrecacheSound(cSoundPath);
+    if (strlen(cSoundPath) > 0)
+        return PrecacheSound(cSoundPath);
+    else
+        return false;
 }
 
 ///////////////////////////////////// MoreFire - Fix burn logic
@@ -465,7 +547,7 @@ void MoreFire_Event_PlayerDeath(Event event, const char[] name, bool dontBroadca
             ExtinguishEntityEx(client);
         
         // Ignite the dead body of a player who died of burns
-        if (IsClientInPlayerTeam(client))
+        if (!IsFakeClient(client)) // Prevent PVE lag
         {
             int damagebits = event.GetInt("damagebits");
             if ((damagebits & DMG_BURN))
@@ -791,7 +873,7 @@ int g_iSoundChannel[] =
     SNDCHAN_VOICE,          /**< Voices */
     SNDCHAN_ITEM,           /**< Items */
     SNDCHAN_BODY,           /**< Player? */
-    SNDCHAN_STREAM,         /**< "Stream iChannel from the static or dynamic area" */
+    SNDCHAN_WEAPON,         /**< "Stream iChannel from the static or dynamic area" */
     SNDCHAN_STATIC,         /**< "Stream iChannel from the static area" */
     SNDCHAN_VOICE_BASE,     /**< "Channel for network voice data" */
     SNDCHAN_USER_BASE,     /**< Anything >= this is allocated to game code */

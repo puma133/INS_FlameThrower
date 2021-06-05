@@ -1,24 +1,79 @@
-# INS_FlameThrower v2.0
-Flamethrower plugin v2.0 for insurgency(2014)
+# INS_FlameThrower
+Flamethrower plugin for insurgency(2014)
+
+## Version
+    Public 2.1
 
 ## Required Mod
 [其他 Extra | 喷火器 Flamethrower](https://steamcommunity.com/sharedfiles/filedetails/?id=2392887647)
 
-## Convar
+
+## ConVar
+<details>
+<summary>Click to show</summary>
+
 ```
-"sm_flamethrower_burn_time" - Burn duration (Default value: 2.0)
-"sm_ft_sound_enable" - Is all plugin flamethrower fire sound enable? (Default value: 1)
-"sm_ft_start_sound_sec" - Flamethrower fire START sound file path for team sec. Closed if empty. (Default value: "weapons/flamethrowerno2/flamethrower_start.wav")
-"sm_ft_loop_sound_sec" - Flamethrower fire LOOP sound file path for team sec. Closed if empty. (Default value: "weapons/flamethrowerno2/flamethrower_looping.wav")
-"sm_ft_end_sound_sec" - Flamethrower fire END sound file path for team sec. Closed if empty. (Default value: "weapons/flamethrowerno2/flamethrower_end.wav")
-"sm_ft_empty_sound_sec" - Flamethrower fire EMPTY sound file path for team sec. Closed if empty. (Default value: "")
-"sm_ft_start_sound_ins" - Flamethrower fire START sound file path for team ins. Closed if empty. (Default value: "weapons/flamethrowerno41/flamethrower_start.wav")
-"sm_ft_loop_sound_ins" - Flamethrower fire LOOP sound file path for team ins. Closed if empty. (Default value: "weapons/flamethrowerno41/flamethrower_looping.wav")
-"sm_ft_end_sound_ins" - Flamethrower fire END sound file path for team ins. Closed if empty. (Default value: "weapons/flamethrowerno41/flamethrower_end.wav")
-"sm_ft_empty_sound_ins" - Flamethrower fire EMPTY sound file path for team ins. Closed if empty. (Default value: "")
+// Flamethrower ammo entity class name.
+// Default: "flame_proj"
+
+// Default: "2.0"
+sm_ft_burn_time "2.0"
+
+// Flamethrower self damage multiplier.
+// Default: "0.2"
+sm_ft_self_damage_mult "0.2"
+
+// Flamethrower launch interval. Closed if less than 0.08.
+// Default: "0.12"
+sm_ft_fire_interval "0.12"
+
+// Is all plugin flamethrower fire sound enable?
+// Default: "1"
+sm_ft_sound_enable "1
+
+// Flamethrower fire START sound file path for team sec. Closed if empty.
+// Default: "weapons/flamethrowerno2/flamethrower_start.wav"
+sm_ft_start_sound_sec "weapons/flamethrowerno2/flamethrower_start.wav"
+
+// Flamethrower fire LOOP sound file path for team sec. Closed if empty.
+// Default: "weapons/flamethrowerno2/flamethrower_looping.wav"
+sm_ft_loop_sound_sec "weapons/flamethrowerno2/flamethrower_looping.wav""
+
+// Flamethrower fire END sound file path for team sec. Closed if empty.
+// Default: "weapons/flamethrowerno2/flamethrower_end.wav"
+sm_ft_end_sound_sec "weapons/flamethrowerno2/flamethrower_end.wav"
+
+// Flamethrower fire EMPTY sound file path for team sec. Closed if empty.
+// Default: ""
+sm_ft_empty_sound_sec ""
+
+// Flamethrower fire START sound file path for team ins. Closed if empty.
+// Default: "weapons/flamethrowerno41/flamethrower_start.wav"
+sm_ft_start_sound_ins "weapons/flamethrowerno41/flamethrower_start.wav"
+
+// Flamethrower fire LOOP sound file path for team ins. Closed if empty.
+// Default: "weapons/flamethrowerno41/flamethrower_looping.wav"
+sm_ft_loop_sound_ins "weapons/flamethrowerno41/flamethrower_looping.wav"
+
+// Flamethrower fire END sound file path for team ins. Closed if empty.
+// Default: "weapons/flamethrowerno41/flamethrower_end.wav"
+sm_ft_end_sound_ins "weapons/flamethrowerno41/flamethrower_end.wav"
+
+// Flamethrower fire EMPTY sound file path for team ins. Closed if empty.
+// Default: ""
+sm_ft_empty_sound_ins ""
 ```
+
+</details>
+<br>
+
 ## Guide
-To use this plugin you need to modify the original theater and create your own theater mod. If you don't know how to do it, please check the [theater modding guide](https://steamcommunity.com/sharedfiles/filedetails/?id=424392708).
+<details>
+<summary>Click to show</summary>
+
+To use this plugin you need to modify the original theater and create your own theater mod. 
+<br>If you don't know how to do it, please check the [theater modding guide](https://steamcommunity.com/sharedfiles/filedetails/?id=424392708).
+
 ### 1. Subscribe the [required mod](https://steamcommunity.com/sharedfiles/filedetails/?id=2392887647) for your server or download it and edit it into your own mod
 ### 2. Add "#base", "sounds" and "localize" to your mod main theater file
 ```
@@ -99,17 +154,28 @@ To use this plugin you need to modify the original theater and create your own t
 ```
 ### 5. Install plugin
 Remove other versions of flamethrower plugin
-<br>Put FlameThrower_public_v2.0.smx into "insurgency\addons\sourcemod\plugins\"
+<br>Put FlameThrower_public.smx into "insurgency\addons\sourcemod\plugins\"
 ### 6. Particles file
-Put the v2.0 versions custom\Flamethrower_Particles_dir.vpk and custom\Flamethrower_Particles_000.vpk to your fastdl folder, and make sure player is forced to download these two vpk files to them custom folder when they join your server.
+Put the version 2.1 custom\Flamethrower_Particles_dir.vpk and custom\Flamethrower_Particles_000.vpk to your fastdl folder, and make sure player is forced to download these two vpk files to them custom folder when they join your server.
 
 If you don't have a fastdl server, player also need to subscribe the required mod by themself, otherwise the flamethrower fire particles effect won't show up if player didn't reconnect to your server when they first join your server erverytime after they start the game program.
 
+</details>
+<br>
+
 ## Credits
-* Models and scripts are modified by axotn1k
+Models and scripts are modified by axotn1k
 
 ## Changelog
 ```
+v2.1:
+* Fixed missing particle effects in previous version.
+* Fixed server crash when sound convar was set to null.
+* Added flamethrower self damage multiplier convar.
+* Added flamethrower launch interval convar.
+* Added flamethrower ammo entity class name convar.
+* Prevent flamethrowers from creating scorch decal.
+
 v2.0:
 * Add New player gerar - Fuel Tank
 * The WeaponAttachmentAPI plugin is no longer needed.
