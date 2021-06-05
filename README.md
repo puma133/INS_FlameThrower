@@ -85,7 +85,7 @@ To use this plugin you need to modify the original theater and create your own t
 <br>If you don't know how to do it, please check the [theater modding guide](https://steamcommunity.com/sharedfiles/filedetails/?id=424392708).
 
 ### 1. Subscribe the [required mod](https://steamcommunity.com/sharedfiles/filedetails/?id=2392887647) for your server OR download it and edit it into your own mod
-### 2. Add "#base", "sounds" and "localize" to your mod main theater file
+### 2. Add "#base", "particles", "sounds" and "localize" to your mod's main theater file
 ```
 "#base" "base/gandor233_flamethrower.theater"
 ...
@@ -103,7 +103,7 @@ To use this plugin you need to modify the original theater and create your own t
     }
 }
 ```
-### 3. Add "flame" to your mod ammo theater file
+### 3. Add "flame" to your mod's ammo theater file
 ```
 "theater"
 {
@@ -117,7 +117,7 @@ To use this plugin you need to modify the original theater and create your own t
     }
 }
 ```
-### 4. Add "weapon_flamethrower_***" to player templates allowed items
+### 4. Add "weapon_flamethrower_***" to your mod's player templates allowed items
 ```
 "theater"
 {

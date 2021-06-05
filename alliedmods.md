@@ -80,8 +80,8 @@ sm_ft_empty_sound_ins ""[/CODE][/SPOILER]
 [SIZE="4"]Installation Guide[/SIZE]
 [SPOILER]To use this plugin you need to modify the original theater and create your own theater mod.
 If you don't know how to do it, please check the [URL="https://steamcommunity.com/sharedfiles/filedetails/?id=424392708"]theater modding guide[/URL].
-[LIST=1][*][SIZE="2"]Subscribe the [URL="https://steamcommunity.com/sharedfiles/filedetails/?id=424392708"]required mod[/URL] for your server or download it and edit it into your own mod[/SIZE]
-[*][SIZE="2"]Add "#base", "sounds" and "localize" to your mod main theater file[/SIZE]
+[LIST=1][*][SIZE="2"]Subscribe the [URL="https://steamcommunity.com/sharedfiles/filedetails/?id=424392708"]required mod[/URL] for your server [B]OR[/B] download it and edit it into your own mod[/SIZE]
+[*][SIZE="2"]Add "#base", "particles", "sounds" and "localize" to your mod's main theater file[/SIZE]
 [CODE]"#base" "base/gandor233_flamethrower.theater"
 ...
 "theater"
@@ -97,7 +97,7 @@ If you don't know how to do it, please check the [URL="https://steamcommunity.co
         }
     }
 }[/CODE]
-[*][SIZE="2"]Add "flame" to your mod ammo theater file[/SIZE]
+[*][SIZE="2"]Add "flame" to your mod's ammo theater file[/SIZE]
 [CODE]"theater"
 {
     "ammo"
@@ -109,7 +109,7 @@ If you don't know how to do it, please check the [URL="https://steamcommunity.co
         }
     }
 }[/CODE]
-[*][SIZE="2"]Add "weapon_flamethrower_***" to player templates allowed items[/SIZE]
+[*][SIZE="2"]Add "weapon_flamethrower_***" to player your mod's templates allowed items[/SIZE]
 [CODE]"theater"
 {
     "player_templates"
