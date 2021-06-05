@@ -24,32 +24,6 @@ public Plugin myinfo =
 #define TEAM_2_INS 3
 #define TEAM_ALL 4
 #define MAX_TEAM 5
-// Game mode
-#define MAX_GAME_MODE_CLASS     2
-#define MAX_GAME_MODE           20
-#define GAME_MODE_CLASS_DISABLE -1
-#define GAME_MODE_CLASS_PVE     0
-#define GAME_MODE_CLASS_PVP     1
-#define GAME_MODE_CHECKPOINT    0
-#define GAME_MODE_HUNT          1
-#define GAME_MODE_CONQUER       2
-#define GAME_MODE_OUTPOST       3
-#define GAME_MODE_SURVIVAL      4
-#define GAME_MODE_PUSH          5
-#define GAME_MODE_AMBUSH        6
-#define GAME_MODE_BATTLE        7
-#define GAME_MODE_ELIMINATION   8
-#define GAME_MODE_FIREFIGHT     9
-#define GAME_MODE_FLASHPOINT    10
-#define GAME_MODE_INVASION      11
-#define GAME_MODE_INFILTRATE    12
-#define GAME_MODE_OCCUPY        13
-#define GAME_MODE_SKIRMISH      14
-#define GAME_MODE_STRIKE        15
-#define GAME_MODE_VENDETTA      16
-#define GAME_MODE_ARMSRACE      17
-#define GAME_MODE_DEATHMATCH    18
-#define GAME_MODE_DEMOLITION    19
 // Player input
 #define MAX_BUTTONS         32
 #define INPUT_ATTACK        (1 << 0)     //  (鼠左)     开火
@@ -154,12 +128,10 @@ public void OnMapStart()
     PrecacheFile();
     
     MoreFire_OnMapStart();
-    GameMode_OnMapStart();
     return;
 }
 public void OnMapEnd()
 {
-    GameMode_OnMapEnd();
     return;
 }
 
@@ -840,85 +812,3 @@ stock void StopEntitySound(int entity, const char[] cPath, int iChannel = SNDCHA
     return;
 }
 ///////////////////////////////////// Function
-
-
-///////////////////////////////////// GameMode
-bool g_bNeedCheckGameMode;
-int g_iGameMode;
-int g_iGameModeClass;
-public void GameMode_OnMapStart()
-{
-    g_bNeedCheckGameMode = true;
-    return;
-}
-public void GameMode_OnMapEnd()
-{
-    g_bNeedCheckGameMode = true;
-    return;
-}
-public int GetGameMode()
-{
-    if (g_bNeedCheckGameMode)
-        CheckGameMode();
-    return g_iGameMode;
-}
-public int GetGameModeClass()
-{
-    if (g_bNeedCheckGameMode)
-        CheckGameMode();
-    return g_iGameModeClass;
-}
-stock void CheckGameMode()
-{
-    char GameMode[32];
-    GetConVarString(FindConVar("mp_gamemode"), GameMode, sizeof(GameMode));
-
-    g_iGameModeClass = GAME_MODE_CLASS_PVE;
-    if (StrContains(GameMode, "checkpoint", false) > -1)
-        g_iGameMode = GAME_MODE_CHECKPOINT;
-    else if (StrContains(GameMode, "hunt", false) > -1)
-        g_iGameMode = GAME_MODE_HUNT;
-    else if (StrContains(GameMode, "conquer", false) > -1)
-        g_iGameMode = GAME_MODE_CONQUER;
-    else if (StrContains(GameMode, "outpost", false) > -1)
-        g_iGameMode = GAME_MODE_OUTPOST;
-    else if (StrContains(GameMode, "survival", false) > -1)
-        g_iGameMode = GAME_MODE_SURVIVAL;
-    else
-    {
-        g_iGameModeClass = GAME_MODE_CLASS_PVP;
-
-        if (StrContains(GameMode, "push", false) > -1)
-            g_iGameMode = GAME_MODE_PUSH;
-        else if (StrContains(GameMode, "ambush", false) > -1)
-            g_iGameMode = GAME_MODE_AMBUSH;
-        else if (StrContains(GameMode, "battle", false) > -1)
-            g_iGameMode = GAME_MODE_BATTLE;
-        else if (StrContains(GameMode, "elimination", false) > -1)
-            g_iGameMode = GAME_MODE_ELIMINATION;
-        else if (StrContains(GameMode, "firefight", false) > -1)
-            g_iGameMode = GAME_MODE_FIREFIGHT;
-        else if (StrContains(GameMode, "flashpoint", false) > -1)
-            g_iGameMode = GAME_MODE_FLASHPOINT;
-        else if (StrContains(GameMode, "invasion", false) > -1)
-            g_iGameMode = GAME_MODE_INVASION;
-        else if (StrContains(GameMode, "infiltrate", false) > -1)
-            g_iGameMode = GAME_MODE_INFILTRATE;
-        else if (StrContains(GameMode, "occupy", false) > -1)
-            g_iGameMode = GAME_MODE_OCCUPY;
-        else if (StrContains(GameMode, "skirmish", false) > -1)
-            g_iGameMode = GAME_MODE_SKIRMISH;
-        else if (StrContains(GameMode, "vendetta", false) > -1)
-            g_iGameMode = GAME_MODE_VENDETTA;
-        else if (StrContains(GameMode, "armsrace", false) > -1)
-            g_iGameMode = GAME_MODE_ARMSRACE;
-        else if (StrContains(GameMode, "deathmatch", false) > -1)
-            g_iGameMode = GAME_MODE_DEATHMATCH;
-        else if (StrContains(GameMode, "demolition", false) > -1)
-            g_iGameMode = GAME_MODE_DEMOLITION;
-    }
-    
-    g_bNeedCheckGameMode = false;
-    return;
-}
-///////////////////////////////////// GameMode

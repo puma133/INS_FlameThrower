@@ -111,13 +111,13 @@ If you don't have a fastdl server, player also need to subscribe the required mo
 ## Changelog
 ```
 v2.0:
+* Add New player gerar - Fuel Tank
+* Fix the problem that the flame doesn't shoot from the muzzle in first person.
 * The WeaponAttachmentAPI plugin is no longer needed.
 * Using plugin instead of theater scripts to play the sound effect of flamethrower.
-* Using theater scripts instead of plugin to cause direct damage.
+* Using theater scripts instead of plugin to create direct damage.
 * Using theater scripts instead of plugin to create flamethrower effects.
-* Fixed problems in the previous version of the model and particle effects files.
-* Fixed problems in the previous version of the model and particle effects files.
-* New player gerar - Fuel Tank
+* Fixed problems in the previous version models and particles files.
 
 v1.0:
 * Initial release.
