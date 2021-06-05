@@ -65,6 +65,7 @@ public Plugin myinfo =
 #define INS_PF_SPAWNZONE     (1 << 11)    // 11出生区              // 2048    // ENTER SPAWN ZONE (Also can resupply)
 #define INS_PF_12            (1 << 12)    // 12                    // 4096    // Unknow
 
+float g_fFlameThrowerBurnDuration;
 float g_fFlameThrowerFireInterval;
 float g_fFlameThrowerSelfDamageMultiplier;
 char g_cFlameThrowerAmmoName[MAX_NAME_LENGTH];
@@ -89,11 +90,14 @@ bool g_bIsClientFiringFlamethrower[MAXPLAYERS+1];
 public void OnPluginStart()
 {
     DEBUG = CreateConVar("sm_flamethrower_debug", "0", "");
+
     sm_ft_using_official_mod = CreateConVar("sm_ft_using_official_mod", "1", "If you are using the official mod of the plugin author, please set it to 1, then the plugin will run AddFileToDownloadsTable(\"custom/Flamethrower_Particles_***.vpk\") and PrecacheParticleFile(\"particles/ins_flamethrower.pcf\") automatically. If set to 0, you need to deal the particles files by yourself.");
+    
     sm_ft_burn_time = CreateConVar("sm_ft_burn_time", "2.0", "Burn duration");
     sm_ft_ammo_class_name = CreateConVar("sm_ft_ammo_class_name", "flame_proj", "Flamethrower ammo entity class name. You must set this convar if you use a different ammo class name in your theater.");
     sm_ft_self_damage_mult = CreateConVar("sm_ft_self_damage_mult", "0.2", "Flamethrower self damage multiplier.");
     sm_ft_fire_interval = CreateConVar("sm_ft_fire_interval", "0.12", "Flamethrower launch interval. Closed if less than 0.08.");
+    sm_ft_burn_time.AddChangeHook(OnConVarChanged);
     sm_ft_ammo_class_name.AddChangeHook(OnConVarChanged);
     sm_ft_self_damage_mult.AddChangeHook(OnConVarChanged);
     sm_ft_fire_interval.AddChangeHook(OnConVarChanged);
@@ -117,6 +121,7 @@ public void OnPluginStart()
     AddTempEntHook("World Decal", TE_OnDecal);
     AddTempEntHook("Entity Decal", TE_OnDecal);
     
+    g_fFlameThrowerBurnDuration = sm_ft_burn_time.FloatValue;
     g_fFlameThrowerFireInterval = sm_ft_fire_interval.FloatValue;
     g_fFlameThrowerSelfDamageMultiplier = sm_ft_self_damage_mult.FloatValue;
     sm_ft_ammo_class_name.GetString(g_cFlameThrowerAmmoName, sizeof(g_cFlameThrowerAmmoName));
@@ -125,6 +130,7 @@ public void OnPluginStart()
 }
 public void OnConVarChanged(ConVar convar, const char[] oldValue, const char[] newValue)
 {
+    g_fFlameThrowerBurnDuration = sm_ft_burn_time.FloatValue;
     g_fFlameThrowerFireInterval = sm_ft_fire_interval.FloatValue;
     g_fFlameThrowerSelfDamageMultiplier = sm_ft_self_damage_mult.FloatValue;
     sm_ft_ammo_class_name.GetString(g_cFlameThrowerAmmoName, sizeof(g_cFlameThrowerAmmoName));
@@ -205,7 +211,7 @@ public Action OnClientAttack(int victim, int& attacker, int& inflictor, float& d
                 GetEdictClassname(inflictor, cWeaponName, sizeof(cWeaponName));
                 if (StrContains(cWeaponName, g_cFlameThrowerAmmoName, false) > -1)
                 {
-                    BurnPlayer(attacker, victim, sm_ft_burn_time.FloatValue);
+                    BurnPlayer(attacker, victim, g_fFlameThrowerBurnDuration);
                     
                     if (attacker == victim)
                     {

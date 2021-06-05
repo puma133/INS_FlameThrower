@@ -24,9 +24,10 @@
 // Default: "1"
 sm_ft_using_official_mod "1"
 
-// Flamethrower ammo entity class name. You must set this convar if you use a different ammo class name in your theater.
+// Flamethrower ammo entity class name. 
+// You must set this convar if you use a different ammo class name in your theater.
 // Default: "flame_proj"
-sm_ft_burn_time "flame_proj"
+sm_ft_ammo_class_name "flame_proj"
 
 // Burn duration
 // Default: "2.0"
