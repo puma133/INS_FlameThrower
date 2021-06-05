@@ -164,7 +164,7 @@ To use this plugin you need to modify the original theater and create your own t
 ```
 ### 5. Install plugin
 Remove other versions of flamethrower plugin
-<br>Put FlameThrower_public.smx into "insurgency\addons\sourcemod\plugins\"
+<br>Put FlameThrower_public.smx into "insurgency\addons\sourcemod\plugins\\"
 ### 6. Particles file
 Put the version 2.1+ custom\Flamethrower_Particles_dir.vpk and custom\Flamethrower_Particles_000.vpk to your fastdl folder, and make sure player is forced to download these two vpk files to them custom folder when they join your server.
 

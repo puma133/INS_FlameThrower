@@ -92,7 +92,6 @@ public void OnPluginStart()
     DEBUG = CreateConVar("sm_flamethrower_debug", "0", "");
 
     sm_ft_using_official_mod = CreateConVar("sm_ft_using_official_mod", "1", "If you are using the official mod of the plugin author, please set it to 1, then the plugin will run AddFileToDownloadsTable(\"custom/Flamethrower_Particles_***.vpk\") and PrecacheParticleFile(\"particles/ins_flamethrower.pcf\") automatically. If set to 0, you need to deal the particles files by yourself.");
-    
     sm_ft_burn_time = CreateConVar("sm_ft_burn_time", "2.0", "Burn duration");
     sm_ft_ammo_class_name = CreateConVar("sm_ft_ammo_class_name", "flame_proj", "Flamethrower ammo entity class name. You must set this convar if you use a different ammo class name in your theater.");
     sm_ft_self_damage_mult = CreateConVar("sm_ft_self_damage_mult", "0.2", "Flamethrower self damage multiplier.");
