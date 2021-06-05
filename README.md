@@ -1,5 +1,5 @@
-# INS_FlameThrower
-Flamethrower plugin for insurgency(2014) v2.0
+# INS_FlameThrower v2.0
+Flamethrower plugin v2.0 for insurgency(2014)
 
 ## Required Mod
 [其他 Extra | 喷火器 Flamethrower](https://steamcommunity.com/sharedfiles/filedetails/?id=2392887647)
