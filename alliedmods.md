@@ -17,7 +17,9 @@
 [/LIST]
 
 [SIZE="4"]ConVar[/SIZE]
-[SPOILER]Copy what you want to modify to your server.cfg[CODE]
+[SPOILER][CODE]
+// Copy what you want to modify to your server.cfg
+
 // If you are using the official mod of the plugin author, please set it to 1, then the plugin will run
 // AddFileToDownloadsTable("custom/Flamethrower_Particles_***.vpk") and PrecacheParticleFile("particles/ins_flamethrower.pcf") automatically. 
 // If set to 0, you need to deal the particles files by yourself.
@@ -109,7 +111,7 @@ If you don't know how to do it, please check the [URL="https://steamcommunity.co
         }
     }
 }[/CODE]
-[*][SIZE="2"]Add "weapon_flamethrower_***" to player your mod's templates allowed items[/SIZE]
+[*][SIZE="2"]Add "weapon_flamethrower_***" to your mod's player templates allowed items[/SIZE]
 [CODE]"theater"
 {
     "player_templates"
@@ -154,7 +156,7 @@ If you don't know how to do it, please check the [URL="https://steamcommunity.co
 }[/CODE]
 [*][SIZE="2"]Install Plugin[/SIZE]
 Remove other versions of flamethrower plugin.
-Put version 2.1+ FlameThrower_public.smx into "insurgency\addons\sourcemod\plugins\"
+Put FlameThrower_public.smx into "insurgency\addons\sourcemod\plugins\"
 
 
 [*][SIZE="2"]Custom Particles File[/SIZE]
