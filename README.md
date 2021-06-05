@@ -65,7 +65,6 @@ sm_ft_empty_sound_ins ""
 ```
 
 </details>
-<br>
 
 ## Guide
 <details>
@@ -161,7 +160,6 @@ Put the version 2.1 custom\Flamethrower_Particles_dir.vpk and custom\Flamethrowe
 If you don't have a fastdl server, player also need to subscribe the required mod by themself, otherwise the flamethrower fire particles effect won't show up if player didn't reconnect to your server when they first join your server erverytime after they start the game program.
 
 </details>
-<br>
 
 ## Credits
 Models and scripts are modified by axotn1k
