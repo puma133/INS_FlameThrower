@@ -18,7 +18,9 @@
 
 [SIZE="4"]ConVar[/SIZE]
 [SPOILER]Copy what you want to modify to your server.cfg[CODE]
-// If you are using the official mod of the plugin author, please set it to 1, then the plugin will run AddFileToDownloadsTable("custom/Flamethrower_Particles_***.vpk") and PrecacheParticleFile("particles/ins_flamethrower.pcf") automatically. If set to 0, you need to deal the particles files by yourself.
+// If you are using the official mod of the plugin author, please set it to 1, then the plugin will run
+// AddFileToDownloadsTable("custom/Flamethrower_Particles_***.vpk") and PrecacheParticleFile("particles/ins_flamethrower.pcf") automatically. 
+// If set to 0, you need to deal the particles files by yourself.
 // Default: "1"
 sm_ft_using_official_mod "1"
 
